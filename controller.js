@@ -789,6 +789,26 @@ app.get('/get_profile',middleware.isloggedIn,function(req,res){
         }
     });
 });
+app.post('/del-profile',function(req,res){
+    token = req.headers.authorization.split(' ')[1];
+    tokenv = jwt.verify(token,'creation');
+    register.updateOne({_id:tokenv._id},{image:"https://imagepass.s3.ap-south-1.amazonaws.com/default.png"},function(err,result){
+        if(result)
+        {
+            return res.json({
+                sucess:true,
+                message:"Profile Photo is removed"
+            },200)
+        }
+        if(err)
+        {
+            return res.json({
+                error:true,
+                message:"Error while deleting the image"
+            },400)
+        }
+    })
+})
 app.get('/get_sub/:id',middleware.isloggedIn,function(req,res){
     token = req.headers.authorization.split(' ')[1];
     tokenv = jwt.verify(token,'creation');
