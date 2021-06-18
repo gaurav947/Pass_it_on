@@ -948,6 +948,26 @@ app.get('/get-favorite',middleware.isloggedIn,function(req,res){
         }
     })
 });
+app.post('/remove-favorite',middleware.isloggedIn,function(req,res){
+    token = req.headers.authorization.split(' ')[1];
+    tokenv = jwt.verify(token,'creation');
+    favorite.deleteOne({my_id:tokenv._id,detail_id:req.body.detail_id},function(err,result){
+        if(result)
+        {
+            return res.json({
+                sucess:true,
+                message:"This item removed from favorite list"
+            },200);
+        }
+        if(err)
+        {
+            return res.json({
+                error:err,
+                message:"Error while removing from favorite list"
+            },400);
+        }
+    })
+})
 app.get('/get_Myupload_detail',middleware.isloggedIn,function(req,res){
     token = req.headers.authorization.split(' ')[1];
     tokenv = jwt.verify(token,'creation');
