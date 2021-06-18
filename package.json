@@ -1,0 +1,44 @@
+{
+  "name": "pass-it-on",
+  "version": "1.0.0",
+  "description": "",
+  "main": "controller.js",
+  "dependencies": {
+    "aws-sdk": "^2.921.0",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "eiows": "^3.6.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
+    "mongodb": "^3.6.5",
+    "mongoose": "^5.12.2",
+    "mongoose-validator": "^2.1.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "nodemon": "^2.0.7",
+    "otp-generator": "^2.0.0",
+    "socket.io": "^4.1.1",
+    "upper-case": "^2.0.2"
+  },
+  "scripts": {
+    "start": "node controller",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaurav947/Pass_it_on.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaurav947/Pass_it_on/issues"
+  },
+  "homepage": "https://github.com/gaurav947/Pass_it_on#readme",
+  "optionalDependencies": {
+    "bufferutil": "^4.0.3",
+    "utf-8-validate": "^5.0.5"
+  }
+}
