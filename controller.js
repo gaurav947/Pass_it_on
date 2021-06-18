@@ -25,7 +25,6 @@ const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
-
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
       cb(null, true);
@@ -33,7 +32,6 @@ const fileFilter = (req, file, cb) => {
       cb(new Error("Invalid file type, only JPEG and PNG is allowed!"), false);
     }
   };
-  
 const upload = multer({
 fileFilter,
 storage: multerS3({
@@ -48,8 +46,6 @@ storage: multerS3({
     },
 }),
 });
-
-
 app.post('/register',function(req,res){
     if((req.body.password).length<6)
     {
@@ -919,25 +915,38 @@ app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
 app.get('/get-favorite',middleware.isloggedIn,function(req,res){
     token = req.headers.authorization.split(' ')[1];
     tokenv = jwt.verify(token,'creation');
-    favorite.find({my_id:tokenv._id,like_status:true},function(err,result){
-        console.log
-        if(result){
+    favorite.aggregate([
+        {
+            $match:{
+                my_id:mongoose.Types.ObjectId(tokenv._id),
+                like_status:true
+            }
+        },
+        {
+            $lookup:{
+                from:"details",
+                localField:'detail_id',
+                foreignField:"_id",
+                as:"like"
+            }
+        }
+    ],function(err,result)
+    {
+        if(result)
+        {
             return res.json({
-            sucess:true,
-            result:result,
-            message:"Sucessfully showing favorite list....",
-            status:200
-            });
+                sucess:true,
+                message:result
+            },200)
         }
         if(err)
         {
             return res.json({
-                error:true,
-                message:"Error while showing list...",
-                status:400
-            });
+                eror:true,
+                error:err
+            },400)
         }
-    });
+    })
 });
 app.get('/get_Myupload_detail',middleware.isloggedIn,function(req,res){
     token = req.headers.authorization.split(' ')[1];
