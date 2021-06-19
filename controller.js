@@ -1016,6 +1016,7 @@ app.post('/del_Myupload-detail',middleware.isloggedIn,function(req,res){
     details.deleteOne({user_id:tokenv._id,_id:req.body.details_id},function(err,result){
         if(result)
         {
+            favorite.deleteOne({user_id:tokenv._id,detail_id:req.body.detail_id},function(err,result){});
             res.json({
                 sucess:true,
                 message:"Your upload is sucessfully deleted!",
