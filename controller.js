@@ -918,6 +918,7 @@ app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
         if(result){
             return res.json({
                 sucess:true,
+                my_id:tokenv._id,
                 result:result,
                 message:"Detail fetched sucessfully.....",
                 status:200
