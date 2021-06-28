@@ -912,6 +912,8 @@ app.get('/get_detail/:id/:u_id',middleware.isloggedIn,function(req,res){
     });
 });
 app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
+    token=req.headers.authorization.split(' ')[1];
+    tokenv=jwt.verify(token,'creation');
     details.findOne({_id:mongoose.Types.ObjectId(req.params.id)},function(err,result){
         if(result){
             return res.json({
