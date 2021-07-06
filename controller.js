@@ -395,7 +395,7 @@ app.post('/details',upload.any(),middleware.isloggedIn,function(req,res){0
         })
     }
     else if(req.body.topic && req.body.author 
-        && req.body.no_of_pages  && req.body.description && req.body.university
+        && req.body.no_of_pages  && req.body.description 
         && req.body.price && req.body.cat_id && req.body.sub_cat_id)
     {
         var data = {
