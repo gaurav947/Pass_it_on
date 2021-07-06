@@ -405,7 +405,6 @@ app.post('/details',upload.any(),middleware.isloggedIn,function(req,res){0
             sub_cat_id:req.body.sub_cat_id,
             topic:req.body.topic,
             author:req.body.author,
-            university:req.body.university,
             no_of_pages:req.body.no_of_pages,
             description:req.body.description,
             price:req.body.price
