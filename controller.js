@@ -897,6 +897,7 @@ app.get('/get_detail/:id/:u_id',middleware.isloggedIn,function(req,res){
         {
             return res.json({
                 sucess:true,
+                my_id:tokenv._id,
                 data:sucess,
                 message:"Sucessfull..."
             });
