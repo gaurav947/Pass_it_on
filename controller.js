@@ -914,15 +914,49 @@ app.get('/get_detail/:id/:u_id',middleware.isloggedIn,function(req,res){
 app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
     token=req.headers.authorization.split(' ')[1];
     tokenv=jwt.verify(token,'creation');
-    details.findOne({_id:mongoose.Types.ObjectId(req.params.id)},function(err,result){
+    details.aggregate([
+        {
+            
+                $match:{"_id":mongoose.Types.ObjectId(req.params.id)}
+        },
+        {    
+            $lookup:{
+                from:"registers",
+                localField:"user_id",
+                foreignField:"_id",
+                as:"user"
+            }
+        },
+        {
+            $unwind:"$user"
+        },
+        {
+            $project:{
+                "_id":1,
+                "images":1,
+                "cat_id":1,
+                "sub_cat._id":1,
+                "item_name":1,
+                "quantity":1,
+                "description":1,
+                "price":1,
+                "user._id":1,
+                "user.name":1,
+                "user.college":1
+            }
+        }
+        
+    ],function(err,result){
         if(result){
+            console.log(result);
             return res.json({
                 sucess:true,
                 my_id:tokenv._id,
                 result:result,
                 message:"Detail fetched sucessfully.....",
                 status:200
-            });
+
+            })
         }
         if(err)
         {
