@@ -887,9 +887,45 @@ app.get('/get_detail/:id/:u_id',middleware.isloggedIn,function(req,res){
                                 ]
                            }
                         }
-                     },
+                    },
+                     {
+                        $lookup:{
+                            from:"favorites",
+                            let: { book: "$_id"},
+                            pipeline:[
+                                {
+                                    $match:{
+                                        $expr:{
+                                        $and:[
+                                            {$eq:["$detail_id","$$book"]},
+                                            {$eq:["$my_id",mongoose.Types.ObjectId(tokenv._id)]}
+
+                                        ]
+                                    }
+                                    }
+                                }
+                            ],
+                            as:"favorites"
+                        }
+                    },
+                    {
+                        $addFields:{
+                            favorite:{
+                                $cond:[{
+                                    $gt:[{$size:"$favorites"},0]
+                                },
+                                1,
+                                0]
+                            }
+                        }
+                    }
                 ],
                 as:"book"
+            }
+        },
+        {
+            $project:{
+                "book":1,   
             }
         }
     ],function(err,sucess){
