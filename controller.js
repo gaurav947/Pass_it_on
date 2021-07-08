@@ -504,7 +504,7 @@ app.post('/change_password',middleware.isloggedIn,function(req,res){
     register.findOne({_id:tokenv._id},function(err,result){
         if(result.password === md5(req.body.old_password))
         {
-            if(req.body.New_password>=6)
+            if((req.body.New_password).length>=6)
             {
                 if(req.body.New_password === req.body.confirm_password)
                 {
