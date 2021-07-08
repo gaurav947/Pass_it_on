@@ -976,23 +976,12 @@ app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
                 ],
                 as:"favorites"
             }
-        },
-        {
-            $addFields:{
-                favorites:{
-                    $cond:[{
-                        $gt:[{$size:"$favorites"},0]
-                    },
-                    1,
-                    0]
-                }
-            }
         }
 
     ],function(err,result){
         console.log(err);
         console.log(result)
-        if(result)
+        if(result!=null)
         {
             return res.json({
                 sucess:true,
@@ -1003,30 +992,7 @@ app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
 
             })
         }
-        if(err)
-        {
-            return res.json({
-                error:true,
-                message:"Error while fetching data..",
-                status:400
-            });
-        }
-    });
-    token = req.headers.authorization.split(' ')[1];
-    tokenv = jwt.verify(token,'creation');
-    details.findOne({_id:mongoose.Types.ObjectId(req.params.id)},function(err,result){
-        if(result)
-        {
-            return res.json({
-                sucess:true,
-                my_id:tokenv._id,
-                result:result,
-                message:"Detail fetched sucessfully.....",
-                status:200
-
-            })
-        }
-        if(err)
+        if(err!=null)
         {
             return res.json({
                 error:true,
