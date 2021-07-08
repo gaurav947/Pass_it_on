@@ -979,7 +979,7 @@ app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
         },
         {
             $addFields:{
-                favorite:{
+                favorites:{
                     $cond:[{
                         $gt:[{$size:"$favorites"},0]
                     },
