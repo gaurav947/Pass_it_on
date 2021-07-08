@@ -948,7 +948,70 @@ app.get('/get_detail/:id/:u_id',middleware.isloggedIn,function(req,res){
         }
     });
 });
-app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
+app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){ 
+    token = req.headers.authorization.split(' ')[1];
+    tokenv = jwt.verify(token,'creation');
+    details.aggregate([
+        {
+            $match:{
+                "_id":mongoose.Types.ObjectId(req.params.id)
+            }
+        },
+        {
+            $lookup:{
+                from:"favorites",
+                let: { book: "$_id"},
+                pipeline:[
+                    {
+                        $match:{
+                            $expr:{
+                            $and:[
+                                {$eq:["$detail_id","$$book"]},
+                                {$eq:["$my_id",mongoose.Types.ObjectId(tokenv._id)]}
+
+                            ]
+                        }
+                        }
+                    }
+                ],
+                as:"favorites"
+            }
+        },
+        {
+            $addFields:{
+                favorite:{
+                    $cond:[{
+                        $gt:[{$size:"$favorites"},0]
+                    },
+                    1,
+                    0]
+                }
+            }
+        }
+
+    ],function(err,result){
+        console.log(err);
+        console.log(result)
+        if(result)
+        {
+            return res.json({
+                sucess:true,
+                my_id:tokenv._id,
+                result:result,
+                message:"Detail fetched sucessfully.....",
+                status:200
+
+            })
+        }
+        if(err)
+        {
+            return res.json({
+                error:true,
+                message:"Error while fetching data..",
+                status:400
+            });
+        }
+    });
     token = req.headers.authorization.split(' ')[1];
     tokenv = jwt.verify(token,'creation');
     details.findOne({_id:mongoose.Types.ObjectId(req.params.id)},function(err,result){
