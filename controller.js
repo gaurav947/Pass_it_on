@@ -976,6 +976,17 @@ app.get('/get-detail1/:id',middleware.isloggedIn,function(req,res){
                 ],
                 as:"favorites"
             }
+        },
+        {
+            $addFields:{
+                favorites:{
+                    $cond:[{
+                        $gt:[{$size:"$favorites"},0]
+                    },
+                    1,
+                    0]
+                }
+            }
         }
 
     ],function(err,result){
