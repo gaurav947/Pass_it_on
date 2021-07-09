@@ -138,7 +138,16 @@ app.post('/login',function(req,res){
                 name:result.name,
                 email:result.email
             }
-            if(md5(req.body.password)===result.password)
+            console.log(req.body.password);
+            if(req.body.password == "" ||req.body.password==null||req.body.password==undefined)
+            {
+                return res.json({
+                    error:true,
+                    message:"Please fill the blank password field",
+                    status:400
+                },400);
+            }
+            else if(md5(req.body.password)===result.password)
             {
                 jwt.sign(add,'creation',function(t_err,t_sucess){
                     if(t_sucess)
@@ -587,6 +596,8 @@ app.get('/view_Profile',middleware.isloggedIn,function(req,res){
         {
             return res.json({
                 sucess:true,
+                current_user:tokenv._id,
+                current_user_name:tokenv.name,
                 message:result.image,
                 status:200
             });
@@ -716,11 +727,15 @@ app.post('/favorite',middleware.isloggedIn,function(req,res){
     });
 });
 app.get('/get-cat',middleware.isloggedIn,function(req,res){
+    token = req.headers.authorization.split(' ')[1];
+    tokenv = jwt.verify(token,'creation');
     category.find({},function(err,result){
         if(result)
         {
             return res.json({
                 result:result,
+                current_user:tokenv._id,
+                current_user_name:tokenv.name,
                 message:"Sucessfully fetched!!",
                 status:200
             });
