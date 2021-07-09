@@ -1030,6 +1030,14 @@ app.get('/get-favorite',middleware.isloggedIn,function(req,res){
                 foreignField:"_id",
                 as:"like"
             }
+        },
+        {
+            $unwind:"$like"
+        },
+        {
+            $project:{
+                "like":1
+            }
         }
     ],function(err,result)
     {
