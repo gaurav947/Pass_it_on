@@ -664,19 +664,11 @@ app.post('/Edit_profile',middleware.isloggedIn,function(req,res){
 app.post('/contact',middleware.isloggedIn,function(req,res){
     token = req.headers.authorization.split(' ')[1];
     tokenv = jwt.verify(token,'creation');
-    if((/^[a-zA-Z0-9]+[@][a-z]+[\.][a-z]{2,3}$/.test(req.body.email))===false)
-    {
-            return res.json({
-                err:true,
-                message:"Your email is Invalid...",
-                status:400
-            });
-    }
     var r = {
-        user_id:ObjectId(tokenv._id),
-        email:req.body.email,
+        user_id:tokenv._id,
+        email:tokenv.email,
         subject:req.body.subject,
-        message:req.body.message
+        message:req.body.messages
     }
     contact.create(r,function(err,result){
         if(result)
