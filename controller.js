@@ -691,7 +691,6 @@ app.post('/contact',middleware.isloggedIn,function(req,res){
     });
 
 });
-
 app.post('/favorite',middleware.isloggedIn,function(req,res){
     token = req.headers.authorization.split(' ')[1];
     tokenv = jwt.verify(token,'creation');
@@ -1313,6 +1312,24 @@ app.post('/edit-Imagedetail1',upload.any(),middleware.isloggedIn,function(req,re
         },400)
     }
     
+})
+app.get('/recently-added',middleware.isloggedIn,function(req,res){
+    console.log("Activated!!")
+    details.find({}).sort([["_id", -1]]).limit(10).exec(function(err, result){
+        if(result)
+        {
+            return res.json({
+                Data:result,
+                message:"All data fetched successully"
+            },200);
+        }
+        if(err){
+            return res.json({
+                error:err,
+                message:"Error while fetching recently added data";
+            },400)
+        }
+    });
 })
 const PORT = process.env.PORT || 8085
 app.listen(PORT,function(){
