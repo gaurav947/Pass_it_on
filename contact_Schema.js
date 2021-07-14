@@ -7,7 +7,7 @@ mongoose.connect(DB_URL,{useNewUrlParser:true,useUnifiedTopology:true})
 
 var contact_schema = new mongoose.Schema({
     user_id:{type:mongoose.Types.ObjectId,ref:"register"},
-    email:{type:String,required:true},
+    email:{type:String},
     subject:{type:String,required:true},
     message:{type:String,required:true}
 });

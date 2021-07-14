@@ -138,7 +138,6 @@ app.post('/login',function(req,res){
                 name:result.name,
                 email:result.email
             }
-            console.log(req.body.password);
             if(req.body.password == "" ||req.body.password==null||req.body.password==undefined)
             {
                 return res.json({
@@ -668,9 +667,11 @@ app.post('/contact',middleware.isloggedIn,function(req,res){
         user_id:tokenv._id,
         email:tokenv.email,
         subject:req.body.subject,
-        message:req.body.messages
+        message:req.body.message
     }
     contact.create(r,function(err,result){
+        console.log(err);
+        console.log(result);
         if(result)
         {
             return res.json({
@@ -690,6 +691,7 @@ app.post('/contact',middleware.isloggedIn,function(req,res){
     });
 
 });
+
 app.post('/favorite',middleware.isloggedIn,function(req,res){
     token = req.headers.authorization.split(' ')[1];
     tokenv = jwt.verify(token,'creation');
