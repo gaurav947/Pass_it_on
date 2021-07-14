@@ -1326,7 +1326,7 @@ app.get('/recently-added',middleware.isloggedIn,function(req,res){
         if(err){
             return res.json({
                 error:err,
-                message:"Error while fetching recently added data";
+                message:"Error while fetching recently added data"
             },400)
         }
     });
